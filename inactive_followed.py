@@ -26,7 +26,7 @@ times: T.Dict[str, tweepy.User] = {}
 followed = tweepy_clean.get_followed(api, P.username)
 
 outfile = Path(P.out_csv).expanduser()
-cols = ["username", "name", "last_tweet_time"]
+cols = ["username", "name", "last_tweet_time", "followed"]
 with outfile.open("wt", encoding="utf-8", errors="ignore") as f:
     f.write(",".join(cols) + "\n")
     for user in followed:
@@ -35,6 +35,6 @@ with outfile.open("wt", encoding="utf-8", errors="ignore") as f:
             last_time = user.status.created_at
         except AttributeError:
             last_time = ""
-        line = f"{user.screen_name},{name},{last_time}\n"
+        line = f"{user.screen_name},{name},{last_time}, {user.friends_count}\n"
         f.write(line)
-        print(line)
+        print(line, end="")
